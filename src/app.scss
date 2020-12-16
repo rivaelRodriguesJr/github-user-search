@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;700&family=Roboto:wght@400;500&display=swap');
+
+* {
+  font-family: 'Roboto', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin-bottom: 0;
+  font-weight: 500;
+}
+
+body {
+  background: #FFF;
+  // background: linear-gradient(180deg, #FFFFFF 0%, #F7F9FA 100%);
+  color: #263238;
+  margin: 0;
+} 

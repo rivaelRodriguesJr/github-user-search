@@ -1,0 +1,36 @@
+.container {
+  margin-top: 120px;
+  margin-left: 120px;
+  width: 612px;
+}
+
+.title {
+  font-family: 'Red Hat Display';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 48px;
+  line-height: 64px;
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.02em;
+  color: #062847;
+}
+
+.description {
+  font-family: 'Red Hat Display';
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 36px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: #5A6774;
+}
+
+.link {
+  color: #2690ff;
+}
+
+.btn-container {
+  margin-top: 60px;
+}
