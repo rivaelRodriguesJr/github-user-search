@@ -16,6 +16,7 @@ const Search = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const searchClick = () => {
+    setUser({} as GitHubUser);
     setShowUserInfo(true);
     setIsLoading(true);
     axios({ method: 'GET', url: `https://api.github.com/users/${userName}` })
