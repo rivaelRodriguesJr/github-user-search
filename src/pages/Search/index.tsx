@@ -1,39 +1,26 @@
 import React, { useState } from 'react';
 import Button from '../../core/components/Button';
-
 import './styles.scss';
 import UserInfo from './UserInfo';
 
-export type UserInfoData = {
-  company: string;
-  site: string;
-  locality: string;
-  memberSince: string;
-};
+import axios from 'axios';
+import { GitHubUser } from '../../core/types/GitHubUser';
 
-type Statistics = {
-  publicRepositories: number;
-  followers: number;
-  following: number;
-};
+import ImageLoader from './Loaders/ImageLoader';
+import InfoLoader from './Loaders/InfoLoader';
 
 const Search = () => {
   const [showUserInfo, setShowUserInfo] = useState(false);
-  const [userInfoData, setUserInfoData] = useState<UserInfoData>({
-    company: "Fitec",
-    site: "fitec.org.br",
-    locality: "Campinas/SP",
-    memberSince: "20/02/2020"
-  });
-
-  const [statistics, setStatistics] = useState<Statistics>({
-    publicRepositories: 1,
-    followers: 1,
-    following: 1
-  });
+  const [user, setUser] = useState<GitHubUser>();
+  const [userName, setUserName] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
   const searchClick = () => {
-    setShowUserInfo(!showUserInfo);
+    setShowUserInfo(true);
+    setIsLoading(true);
+    axios({ method: 'GET', url: `https://api.github.com/users/${userName}` })
+      .then(response => setUser(response.data))
+      .finally(() => setIsLoading(false));
   }
 
   return (
@@ -44,43 +31,64 @@ const Search = () => {
           type="text"
           className="search-input"
           placeholder="Usuário Github"
+          value={userName}
+          onChange={(event) => setUserName(event.target.value)}
         />
         <div className="search-button-container">
           <Button content="Encontrar" onClick={searchClick} />
         </div>
       </div>
 
-      {showUserInfo && (<div className="user-info-box">
-        <div className="user-info-container">
-          <img
-            alt="img-profile" className="img-profile"
-            src="https://avatars1.githubusercontent.com/u/46300789?v=4"
-          />
-          <div className="user-info-data-container">
-            <div className="statistics-container">
-              <p className="statistics-item">
-                Repositórios públicos: {statistics.publicRepositories}
-              </p>
-              <p className="statistics-item">
-                Seguidores: {statistics.followers}
-              </p>
-              <p className="statistics-item">
-                Seguindo: {statistics.following}
-              </p>
-            </div>
-            <UserInfo userInfoData={userInfoData} />
-          </div>
+      {showUserInfo && (
+        <div className="user-info-box">
+          {isLoading ? <Loader /> : (
+            <>
+              <div className="user-info-container">
+                <img
+                  alt="img-profile" className="img-profile"
+                  src={user?.avatar_url}
+                />
+                <div className="user-info-data-container">
+                  <div className="statistics-container">
+                    <p className="statistics-item">
+                      Repositórios públicos: {user?.public_repos}
+                    </p>
+                    <p className="statistics-item">
+                      Seguidores: {user?.followers}
+                    </p>
+                    <p className="statistics-item">
+                      Seguindo: {user?.following}
+                    </p>
+                  </div>
+                  <UserInfo
+                    company={user?.company}
+                    blog={user?.blog}
+                    location={user?.location}
+                    created_at={user?.created_at}
+                  />
+                </div>
+              </div>
+              <div className="profile-button">
+                <a href={user?.html_url} target="blank" className="no-decoration">
+                  <Button content="Ver pefil" />
+                </a>
+              </div>
+            </>
+
+          )}
+
         </div>
-        <div className="profile-button">
-          <a href="https://google.com" target="_blank" className="no-decoration">
-            <Button content="Ver pefil" />
-          </a>
-        </div>
-      </div>
       )}
 
     </div>
   );
 }
+
+const Loader = () => (
+  <div className="d-flex">
+    <ImageLoader />
+    <InfoLoader />
+  </div>
+);
 
 export default Search;
