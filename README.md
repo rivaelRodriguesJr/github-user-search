@@ -10,6 +10,8 @@ Pré-requisitos: npm / yarn
 ```bash
 # clonar repositório
 git clone https://github.com/rivaelRodriguesJr/github-user-search.git
+# ou
+git clone git@github.com:rivaelRodriguesJr/github-user-search.git
 
 # entrar na pasta do projeto front end web
 cd github-user-search
